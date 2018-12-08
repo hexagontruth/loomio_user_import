@@ -24,7 +24,11 @@ ActiveAdmin.register_page 'User Import' do
             groups[group_name] = Group.find_by(name: group_name) || :invalid
           end
           if groups[group_name].is_a? Group
-            user.groups.push(groups[group_name])
+            m = Membership.new
+            m.user = user;
+            m.group = groups[group_name]
+            m.accepted_at = Time.now
+            m.save
           end
         end
         user&.save
